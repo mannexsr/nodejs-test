@@ -22,37 +22,67 @@ var flash    = require('connect-flash');
 
 require('./config/passport')(passport); // pass passport for configuration
 
-
+// ******************* REDIS ******************************
 //   host: 'app-runner-test.nr3m79.ng.0001.use1.cache.amazonaws.com',
 
-const { createClient } = require('@redis/client');
+
+const Redis = require('ioredis');
 
 const redisOptions = {
   host: 'app-runner-test.nr3m79.ng.0001.use1.cache.amazonaws.com',
-  port: 6379,
+  port: 6379
 };
 
-// Assuming you have already declared the `redisClient` variable elsewhere
-redisClient = createClient(redisOptions);
+const redisClient = new Redis(redisOptions);
+
+redisClient.on('connect', () => {
+  console.log('Connected to Redis');
+});
 
 redisClient.on('error', (error) => {
   console.error('Error connecting to Redis:', error);
 });
 
-redisClient.on('ready', () => {
-  redisClient.ping((error, result) => {
-    if (error) {
-      console.error('Error pinging Redis:', error);
-    } else {
-      console.log('Redis is alive. Response:', result);
-    }
-    
-    // Close the Redis client connection
-    redisClient.quit();
-  });
+// Use the Redis client for Redis operations
+
+// ...
+
+// When the application is shutting down, close the Redis connection
+process.on('SIGINT', () => {
+  redisClient.quit();
+  process.exit();
 });
 
 
+
+// const { createClient } = require('@redis/client');
+
+// const redisOptions = {
+//   host: 'app-runner-test.nr3m79.ng.0001.use1.cache.amazonaws.com',
+//   port: 6379,
+// };
+
+// // Assuming you have already declared the `redisClient` variable elsewhere
+// redisClient = createClient(redisOptions);
+
+// redisClient.on('error', (error) => {
+//   console.error('Error connecting to Redis:', error);
+// });
+
+// redisClient.on('ready', () => {
+//   redisClient.ping((error, result) => {
+//     if (error) {
+//       console.error('Error pinging Redis:', error);
+//     } else {
+//       console.log('Redis is alive. Response:', result);
+//     }
+    
+//     // Close the Redis client connection
+//     redisClient.quit();
+//   });
+// });
+
+//*************************** END REDIS *********************************
 
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
