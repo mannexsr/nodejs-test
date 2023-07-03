@@ -24,12 +24,13 @@ require('./config/passport')(passport); // pass passport for configuration
 
 // ******************* REDIS ******************************
 //   host: 'app-runner-test.nr3m79.ng.0001.use1.cache.amazonaws.com',
+//          app-runner-test-ro.nr3m79.ng.0001.use1.cache.amazonaws.com
 
 
 const Redis = require('ioredis');
 
 const redisOptions = {
-  host: 'app-runner-test.nr3m79.ng.0001.use1.cache.amazonaws.com',
+  host: 'app-runner-test-ro.nr3m79.ng.0001.use1.cache.amazonaws.com',
   port: 6379,
   password: '',
 };
