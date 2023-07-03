@@ -30,28 +30,22 @@ const Redis = require('ioredis');
 
 const redisOptions = {
   host: 'app-runner-test.nr3m79.ng.0001.use1.cache.amazonaws.com',
-  port: 6379
+  port: 6379,
+  password: '',
 };
 
 const redisClient = new Redis(redisOptions);
 
-redisClient.on('connect', () => {
-  console.log('Connected to Redis');
-});
+redisClient.set('myKey', 'myValue', (error, result) => {
+  if (error) {
+    console.error('Error setting value in Redis:', error);
+  } else {
+    console.log('Value set successfully in Redis');
+  }
 
-redisClient.on('error', (error) => {
-  console.error('Error connecting to Redis:', error);
-});
-
-// Use the Redis client for Redis operations
-
-// ...
-
-// When the application is shutting down, close the Redis connection
-process.on('SIGINT', () => {
   redisClient.quit();
-  process.exit();
 });
+nodeRedisDemo();
 
 
 
