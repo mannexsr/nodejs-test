@@ -30,35 +30,22 @@ require('./config/passport')(passport); // pass passport for configuration
 const Redis = require('ioredis');
 
 const redisOptions = {
-  host: 'test-redis-ro.nr3m79.ng.0001.use1.cache.amazonaws.com',
-  port: 6379,
-  connectTimeout: 50000, // Set the connection timeout to 5 seconds
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
 };
 
 const redis = new Redis(redisOptions);
 
-// Handle the connection error event
-redis.on('error', (error) => {
-  console.error('Error connecting to Redis:', error);
-  redis.quit();
-});
-
-// Handle the timeout event
-redis.on('connectTimeout', () => {
-  console.error('Connection to Redis timed out');
-  redis.quit();
-});
-
-// Ping Redis to test the connection
 redis.ping((error, result) => {
   if (error) {
     console.error('Error pinging Redis:', error);
   } else {
     console.log('Redis is alive. Response:', result);
   }
-  
+
   redis.quit();
 });
+
 
 
 
