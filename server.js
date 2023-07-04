@@ -32,6 +32,9 @@ const Redis = require('ioredis');
 const redisOptions = {
   host: process.env.REDIS_HOST,
   port: process.env.REDIS_PORT,
+  timeout: process.env.REDIS_TIMEOUT,
+  connectTimeout: process.env.REDIS_CONNECTTIMEOUT,
+  maxRetriesPerRequest: process.env.REDIS_MAXRETRIESPERREQUEST,
 };
 
 const redis = new Redis(redisOptions);
